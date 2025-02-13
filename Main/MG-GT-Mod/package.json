@@ -1,0 +1,9 @@
+{
+  "name": "MG-GT-Mod",
+  "version": "0.1.0",
+  "main": "src/mod.js",
+  "license": "MIT license",
+  "author": "MarecGents",
+  "sptVersion": ">=3.10.0",
+  "dependencies": {}
+}

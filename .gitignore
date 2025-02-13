@@ -1,8 +1,8 @@
 
 
 /.idea/
-/Main/MG-Mod/types/
-/Main/MG-Mod/MG-Mod.exe
-/Main/MG-Mod/node_modules
+/Main/MG-GT-Mod/types/
+/Main/MG-GT-Mod/MG-Mod.exe
+/Main/MG-GT-Mod/node_modules
 /Main/order.json
-/Main/MG-Mod/res/price/tokens.json
+/Main/MG-GT-Mod/res/price/tokens.json
