@@ -2,7 +2,7 @@ export enum PathTypes {
     //Relative path to the main folder
     /**
      * @param TraderList path is set for customed trader with single alone package
-     * @param KeyList path is set for the function of MG-GT-Mod --> "keys classify (by maps)"
+     * @param KeyList path is set for the function of MG-Mod --> "keys classify (by maps)" 
      * @param PriceList path is set to save price.json for sync- online flea market price (PVP)
      * @param QuestList patth is set to save the newest copied quests.json file
      * @param SuperItemList ↓

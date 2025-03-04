@@ -19,7 +19,7 @@ export class CustomProfileService {
         const FileControl:IFileControl = new IFileControl(this.mod);
         const Profiles:IMGSingleProfile[] = JSON.parse(FileControl.readFile(this.mod.modpath + PathTypes.ProfilePath + "profile.json")) as IMGSingleProfile[];
         this.MGLoad.MGTemplates.addProfiles(Profiles);
-        this.MGLoad.Output.classLoaded("[MG-GT-Mod][独立存档]");
+        this.MGLoad.Output.classLoaded("[MG-Mod][独立存档]");
     }
 
 }

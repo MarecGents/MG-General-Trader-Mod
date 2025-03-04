@@ -72,7 +72,7 @@ export class CustomTraderService {
             // 添加商人本体信息
             this.addCustomTrader(TraderInfo, TraderData.traderData);
             // 添加完毕
-            this.outPut._FormatOutput(`商人`,`【${TraderInfo.name}】已加载！`,LogTextColor.MAGENTA);
+            this.outPut.addCustomTraderSuccess(`${TraderInfo.name}`);
             // 修复商人出售预设文件预存信息
             this.fixCustomTraderAssorts(TraderId);
             // 添加商人的任务图片等信息
@@ -184,11 +184,11 @@ export class CustomTraderService {
     public addQuestImage(TraderInfo: CustomTraderInfo, traderData: ICustomTrader):void{
         if(!("images" in traderData)){ return;}
         if(!("quests" in traderData.images)){ return;}
+        const ImageRouter:ImageRouter = this.mod.container.resolve<ImageRouter>("ImageRouter");
         const questImagesPath = `${this.mod.modpath + PathTypes.TraderPath}${TraderInfo.name}/images/quests/`;
         const iconList:any = this.mod.VFS.getFiles(questImagesPath);
-        for(let icon in iconList){
-            const filename:string = this.mod.VFS.stripExtension(icon);
-            const ImageRouter:ImageRouter = this.mod.container.resolve<ImageRouter>("ImageRouter");
+        for(let icon of iconList){
+            let filename:string = this.mod.VFS.stripExtension(icon);
             ImageRouter.addRoute(`/files/quest/icon/${filename}`, `${questImagesPath}${icon}`);
         }
     }
