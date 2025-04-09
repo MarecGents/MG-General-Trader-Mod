@@ -169,7 +169,7 @@ export class MGTemplates {
             overrideProperties: MGItem.items._props,
             parentId: ""
         }
-        if(this.findItemsParentIdById(MGItem.items.cloneId) === "null"){
+        if(!this.isInItems(MGItem.items.cloneId)){
             this.MGLoad.Output.warning(`MG独立物品id为${MGItem.items.newId}的\"cloneId\"未能在items.json中找到，无法添加到游戏中，请检查\"cloneId\"是否正确！`);
             return;
         }
@@ -186,11 +186,15 @@ export class MGTemplates {
             ch:MGItem.description
         }
         this.addCustomItem(NewItemDetails);
+        // 3.11.X的CustomItemService()并未进行Filter的适配，导致配件无法兼容，在此次进行兼容操作。
+        let filter :ItemFilterList = {};
+        filter[MGItem.items.newId] = {filterId:MGItem.items.cloneId};
+        this.addFiltersToDB(filter);
     }
 
     public addCustomTraderItem(newItem:CustomTraderItems){
         let itemDB:Record<string,ITemplateItem> = this.getItems();
-        let itemTemplate:ITemplateItem={};
+        let itemTemplate:ITemplateItem={} as ITemplateItem;
         if(!newItem.item){
             this.MGLoad.Output.warning("自定义商人独立物品信息缺失，请自行检查！");
             return;

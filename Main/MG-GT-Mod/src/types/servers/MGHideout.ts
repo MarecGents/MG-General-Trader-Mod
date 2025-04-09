@@ -37,6 +37,7 @@ export class MGHideout{
     public getAreas():IHideoutArea[]{
         return this.getHideout().areas;
     }
+
     public getQte():IQteData[]{
         return this.getHideout().qte;
     }
@@ -45,8 +46,8 @@ export class MGHideout{
         let areas:IHideoutArea[] = this.getAreas();
         for(let id1 in areas){
             for(let n in areas[id1].stages){
-                let time:number = areas[id1].stages[n].constructionTime;
-                if(time!==0){
+                let oriTime:number = areas[id1].stages[n].constructionTime;
+                if(oriTime!==0){
                     areas[id1].stages[n].constructionTime = time;
                 }
             }

@@ -35,7 +35,7 @@ export class loadMod {
         this.MGTemplates = new MGTemplates(this.mod,this);
         this.MGTraders = new MGTraders(this.mod,this);
         this.MGTest = new MGTest(this.mod, this);
-        this.Output = new OutputService(this.mod.Logger)
+        this.Output = new OutputService(this.mod)
         return this;
     }
 }

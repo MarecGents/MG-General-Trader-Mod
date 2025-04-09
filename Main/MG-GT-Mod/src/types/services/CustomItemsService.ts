@@ -10,6 +10,7 @@ import {Traders} from "@spt/models/enums/Traders";
 import {loadMod} from "../loadMod";
 import {OutputService} from "./OutputService";
 import {MGLocales} from "../servers/MGLocales";
+import {IFileControl} from "../utils/IFileControl";
 
 export class CustomItemsService{
 
@@ -18,6 +19,7 @@ export class CustomItemsService{
     private outPut:OutputService;
     private Locales:MGLocales;
     private IClone: IClone;
+    private FileControl:IFileControl;
 
     constructor(mod: Mod, MGLoad: loadMod) {
         this.mod = mod;
@@ -25,6 +27,7 @@ export class CustomItemsService{
         this.outPut = this.MGLoad.Output;
         this.Locales = this.MGLoad.MGLocales;
         this.IClone = new IClone(this.mod);
+        this.FileControl = new IFileControl(this.mod);
     }
 
     public start():void {
@@ -85,8 +88,8 @@ export class CustomItemsService{
             if("Buffs" in item){
                 newItem.Buffs = item.Buffs;
             }
-            this.mod.VFS.writeFile(`${this.mod.modpath + PathTypes.MGItemPath}${it}-super.json`, JSON.stringify(newItem, null, 4));
-            this.mod.VFS.removeFile(`${this.mod.modpath + PathTypes.SuperItemPath}${it}.json`);
+            this.FileControl.writeFile(`${this.mod.modpath + PathTypes.MGItemPath}${it}-super.json`, JSON.stringify(newItem, null, 4));
+            this.FileControl.removeFile(`${this.mod.modpath + PathTypes.SuperItemPath}${it}.json`);
         }
 
     }
@@ -130,8 +133,8 @@ export class CustomItemsService{
             if ("Buffs" in item && item.Buffs) {
                 newitem.Buffs = item.Buffs;
             }
-            this.mod.VFS.writeFile(`${this.mod.modpath + PathTypes.MGItemPath}${it}-bro.json`, JSON.stringify(newitem, null, 4));
-            this.mod.VFS.removeFile(this.mod.modpath + PathTypes.BrothersItemPath + `${it}.json`);
+            this.FileControl.writeFile(`${this.mod.modpath + PathTypes.MGItemPath}${it}-bro.json`, JSON.stringify(newitem, null, 4));
+            this.FileControl.removeFile(this.mod.modpath + PathTypes.BrothersItemPath + `${it}.json`);
         }
     }
 
@@ -234,8 +237,8 @@ export class CustomItemsService{
                 }
             }
             if (creatTimes > 0) {
-                this.mod.VFS.removeFile(`${this.mod.modpath + PathTypes.MGItemPath}${it}.json`);
-                this.mod.VFS.writeFile(`${this.mod.modpath + PathTypes.MGItemPath}${it}.json`, JSON.stringify(item, null, 4));
+                this.FileControl.removeFile(`${this.mod.modpath + PathTypes.MGItemPath}${it}.json`);
+                this.FileControl.writeFile(`${this.mod.modpath + PathTypes.MGItemPath}${it}.json`, JSON.stringify(item, null, 4));
             }
         }
     }

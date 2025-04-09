@@ -26,12 +26,9 @@ export class KeysClassifyService {
         this.FileControl = new IFileControl(this.mod);
     }
 
-    public start(ConfigJson: MGModConfig):void {
-        if( typeof ConfigJson.extra.KeyNameExpand == "boolean" && ConfigJson.extra.KeyNameExpand){
-
-            this.keysClassify();
-            this.outPut.classLoaded(`[MG-Mod][钥匙分类功能]`);
-        }
+    public start():void {
+        this.keysClassify();
+        this.outPut.classLoaded(`[MG-Mod][钥匙分类功能]`);
     }
 
     private keysClassify():void {

@@ -1,12 +1,13 @@
 import {ILogger} from "@spt/models/spt/utils/ILogger";
 import {LogTextColor} from "@spt/models/spt/logging/LogTextColor";
 import {LogBackgroundColor} from "@spt/models/spt/logging/LogBackgroundColor";
+import {Mod} from "../../mod";
 
 export class OutputService {
     private logger: ILogger
 
-    constructor(logger: ILogger) {
-        this.logger = logger
+    constructor(mod: Mod) {
+        this.logger = mod.container.resolve<ILogger>("WinstonLogger");
     }
 
     public log(text:any,color:LogTextColor,bgColor?:LogBackgroundColor):void  {

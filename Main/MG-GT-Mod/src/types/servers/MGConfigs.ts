@@ -156,16 +156,9 @@ export class MGConfigs{
         })
     }
 
-    public c_convertIntoPmcChance(pmcPercent: number):void {
+    public c_USECChance(USECChance: number):void {
         let pmc:IPmcConfig = this.getConfig(ConfigTypes.PMC);
-        pmc.convertIntoPmcChance.default.assult = {
-            min: pmcPercent,
-            max: pmcPercent
-        };
-        pmc.convertIntoPmcChance.factory4_day.assult = {
-            min: pmcPercent,
-            max: pmcPercent
-        };
+        pmc.isUsec = USECChance;
     }
 
     /**

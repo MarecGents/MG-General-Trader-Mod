@@ -1,10 +1,10 @@
 {
   "name": "MG-GT-Mod",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "src/mod.js",
   "license": "MIT license",
   "author": "MarecGents",
-  "sptVersion": ">=3.10.0",
+  "sptVersion": ">=3.11.0",
   "isBundleMod": true,
   "dependencies": {}
 }

@@ -16,7 +16,8 @@ import {MGLocales} from "../servers/MGLocales";
 import {IFormatUtils} from "../utils/IFormatUtils";
 import {HashUtil} from "@spt/utils/HashUtil";
 import {ItemsSpawnService} from "./ItemsSpawnService";
-import {LogTextColor} from "@spt/models/spt/logging/LogTextColor";
+import {IFileControl} from "../utils/IFileControl";
+import {ImporterUtils} from "../utils/ImporterUtils";
 
 
 export class CustomTraderService {
@@ -26,6 +27,7 @@ export class CustomTraderService {
     private outPut:OutputService;
     private Locales:MGLocales;
     private IClone: IClone;
+    private FileControl:IFileControl;
 
     constructor(mod: Mod, MGLoad: loadMod) {
         this.mod = mod;
@@ -33,19 +35,19 @@ export class CustomTraderService {
         this.outPut = this.MGLoad.Output;
         this.Locales = this.MGLoad.MGLocales;
         this.IClone = new IClone(this.mod);
+        this.FileControl = new IFileControl(this.mod);
     }
 
     public start(): void {
         let bundlesJson: IBundleManifest = this.initCustomTrader();
-        this.mod.VFS.writeFile(`${this.mod.modpath}bundles.json`,JSON.stringify(bundlesJson, null, 4));
+        this.FileControl.writeFile(`${this.mod.modpath}bundles.json`,JSON.stringify(bundlesJson, null, 4));
     }
 
     private initCustomTrader(): IBundleManifest {
         const TradersList: Record<string, ICustomTrader> = this.IClone.clone(PathTypes.TraderPath);
-
         // 第一步先将 bundles.json 删除
-        if (this.mod.VFS.exists(`${this.mod.modpath}bundles.json`)) {
-            this.mod.VFS.removeFile(`${this.mod.modpath}bundles.json`);
+        if (this.FileControl.exists(`${this.mod.modpath}bundles.json`)) {
+            this.FileControl.removeFile(`${this.mod.modpath}bundles.json`);
         }
         const bundlesJson: IBundleManifest = {
             manifest: []
@@ -76,6 +78,7 @@ export class CustomTraderService {
             // 修复商人出售预设文件预存信息
             this.fixCustomTraderAssorts(TraderId);
             // 添加商人的任务图片等信息
+
             this.addQuestImage(TraderInfo, TraderData);
             // 添加商人的独立物品
             this.addItemsToServer(TraderInfo, TraderData);
@@ -143,7 +146,7 @@ export class CustomTraderService {
         // 商人头像
         const traderImage: string = `${traderId}.jpg`;
         const imagePath: string = `${this.mod.modpath + PathTypes.TraderPath}${TraderInfo.name}/${traderImage}`;
-        if (this.mod.VFS.exists(imagePath)){
+        if (this.FileControl.exists(imagePath)){
             newTraderDB.base.avatar = newTraderDB.base.avatar.replace("unKnown.jpg", traderImage);
             const ImageRouter:ImageRouter = this.mod.container.resolve<ImageRouter>("ImageRouter");
             ImageRouter.addRoute(newTraderDB.base.avatar.replace(".jpg", ""), imagePath)
@@ -182,19 +185,16 @@ export class CustomTraderService {
     }
 
     public addQuestImage(TraderInfo: CustomTraderInfo, traderData: ICustomTrader):void{
-        if(!("images" in traderData)){ return;}
-        if(!("quests" in traderData.images)){ return;}
-        const ImageRouter:ImageRouter = this.mod.container.resolve<ImageRouter>("ImageRouter");
         const questImagesPath = `${this.mod.modpath + PathTypes.TraderPath}${TraderInfo.name}/images/quests/`;
-        const iconList:any = this.mod.VFS.getFiles(questImagesPath);
-        for(let icon of iconList){
-            let filename:string = this.mod.VFS.stripExtension(icon);
-            ImageRouter.addRoute(`/files/quest/icon/${filename}`, `${questImagesPath}${icon}`);
+        if(!this.FileControl.exists(questImagesPath)){return;}
+        const ImageRouter:ImageRouter = this.mod.container.resolve<ImageRouter>("ImageRouter");
+        const iconList:any = this.FileControl.getFiles(questImagesPath);
+        for(let iconPath of iconList){
+            ImageRouter.addRoute(`/files/quest/icon/${this.FileControl.stripExtension(iconPath)}`, `${questImagesPath}${iconPath}`);
         }
     }
 
     public addItemsToServer(TraderInfo: CustomTraderInfo, traderData: ICustomTrader):void{
-        // 重写  函数 和 功能重复
         const ItemsList:Record<string, CustomTraderItems> = traderData.items;
         for(let itemName in ItemsList){
             let Item:CustomTraderItems = ItemsList[itemName];
